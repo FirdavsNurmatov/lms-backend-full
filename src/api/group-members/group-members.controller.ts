@@ -64,11 +64,9 @@ export class GroupMembersController {
 
   @Post()
   @ApiOperation({ summary: 'Create new group member' })
-  async create(
-    @Body() createGroupMemberDto: CreateGroupMemberDto,
-  ) {
+  async create(@Body() createGroupMemberDto: CreateGroupMemberDto) {
     console.log(createGroupMemberDto);
-    
+
     // return this.prisma.groupMembers.create({
     //   data: {
     //     group_id: createGroupMemberDto.groupId,

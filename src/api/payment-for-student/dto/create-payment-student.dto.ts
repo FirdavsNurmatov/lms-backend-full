@@ -5,8 +5,7 @@ import { PaymentEnum } from '../../../common/enum/index';
 export class CreatePaymentStudentDto {
   @ApiProperty({ enum: PaymentEnum, description: 'Type of the payment' })
   @IsEnum(PaymentEnum, {
-    message:
-      'type must be a valid PaymentType enum value (CASH, CREDIT_CARD)',
+    message: 'type must be a valid PaymentType enum value (CASH, CREDIT_CARD)',
   })
   type: PaymentEnum;
 

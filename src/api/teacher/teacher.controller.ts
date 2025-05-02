@@ -133,7 +133,13 @@ export class TeacherController {
     @Query('gender') gender?: UserGender,
     @Query('full_name') full_name?: string,
   ) {
-    return this.teacherService.findAll(page, limit, date_of_birth, gender, full_name);
+    return this.teacherService.findAll(
+      page,
+      limit,
+      date_of_birth,
+      gender,
+      full_name,
+    );
   }
 
   @Get('for-group')

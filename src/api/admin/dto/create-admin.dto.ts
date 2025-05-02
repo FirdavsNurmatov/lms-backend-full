@@ -65,7 +65,6 @@ export class CreateAdminDto {
   @IsOptional()
   phone_number: string;
 
-  
   @ApiProperty({
     type: String,
     description: 'Address of Admin',
@@ -81,5 +80,5 @@ export class CreateAdminDto {
     example: '2005-05-15',
   })
   @IsDateString()
-  data_of_birth: string| Date;
+  data_of_birth: string | Date;
 }

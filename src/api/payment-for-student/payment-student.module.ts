@@ -7,6 +7,6 @@ import { PrismaService } from 'src/common/prisma/prisma.service';
   imports: [],
   controllers: [PaymentStudentController],
   providers: [PaymentStudentService, PrismaService],
-  exports:[PaymentStudentService]
+  exports: [PaymentStudentService],
 })
 export class PaymentStudentModule {}

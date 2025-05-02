@@ -11,7 +11,6 @@ export class ConfirmPasswordDto {
   @IsNotEmpty()
   old_password: string;
 
-
   @ApiProperty({
     type: String,
     description: 'New Password',

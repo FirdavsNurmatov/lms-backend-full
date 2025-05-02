@@ -44,15 +44,23 @@ export class DashboardService {
     @Inject('REDIS_CLIENT') private readonly redis: Redis,
   ) {}
 
-  private async getCachedData<T>(cacheKey: string, getData: () => Promise<T>): Promise<T> {
+  private async getCachedData<T>(
+    cacheKey: string,
+    getData: () => Promise<T>,
+  ): Promise<T> {
     try {
       const cachedData = await this.redis.get(cacheKey);
       if (cachedData) {
         return JSON.parse(cachedData);
       }
-      
+
       const data = await getData();
-      await this.redis.set(cacheKey, JSON.stringify(data), 'EX', config.REDIS_EX_TIME);
+      await this.redis.set(
+        cacheKey,
+        JSON.stringify(data),
+        'EX',
+        config.REDIS_EX_TIME,
+      );
       return data;
     } catch (error) {
       console.error(`Error fetching ${cacheKey}:`, error);
@@ -66,12 +74,13 @@ export class DashboardService {
 
   async getGeneralStats(): Promise<DashboardStats> {
     return this.getCachedData(this.getCacheKey('general'), async () => {
-      const [studentsCount, teachersCount, groupsCount, coursesCount] = await Promise.all([
-        this.prisma.user.count({ where: { role: UserRole.STUDENT } }),
-        this.prisma.user.count({ where: { role: UserRole.TEACHER } }),
-        this.prisma.groups.count(),
-        this.prisma.course.count(),
-      ]);
+      const [studentsCount, teachersCount, groupsCount, coursesCount] =
+        await Promise.all([
+          this.prisma.user.count({ where: { role: UserRole.STUDENT } }),
+          this.prisma.user.count({ where: { role: UserRole.TEACHER } }),
+          this.prisma.groups.count(),
+          this.prisma.course.count(),
+        ]);
 
       return {
         students: studentsCount,
@@ -115,9 +124,12 @@ export class DashboardService {
 
       return {
         totalGroups: groups.length,
-        activeGroups: groups.filter(group => group.status === 'ACTIVE').length,
-        averageStudents: groups.reduce((acc, group) => acc + group._count.group_members, 0) / groups.length,
-        groupsData: groups.map(group => ({
+        activeGroups: groups.filter((group) => group.status === 'ACTIVE')
+          .length,
+        averageStudents:
+          groups.reduce((acc, group) => acc + group._count.group_members, 0) /
+          groups.length,
+        groupsData: groups.map((group) => ({
           name: group.name,
           status: group.status,
           students: group._count.group_members,
@@ -135,17 +147,17 @@ export class DashboardService {
             include: {
               group: {
                 include: {
-                  group_members: true
-                }
-              }
-            }
-          }
-        }
+                  group_members: true,
+                },
+              },
+            },
+          },
+        },
       });
 
       return {
         totalTeachers: teachers.length,
-        teachersData: teachers.map(teacher => ({
+        teachersData: teachers.map((teacher) => ({
           name: teacher.username,
           groups: teacher.group_members.length,
           students: teacher.group_members.reduce((acc, member) => {

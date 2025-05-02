@@ -7,7 +7,7 @@ export class FindCoursesQueryDto {
     description: 'Filter courses by status',
     enum: CourseStatus,
     required: false,
-    example: 'ACTIVE'
+    example: 'ACTIVE',
   })
   @IsOptional()
   @IsEnum(CourseStatus)
@@ -16,7 +16,7 @@ export class FindCoursesQueryDto {
   @ApiProperty({
     description: 'Search courses by name or description',
     required: false,
-    example: 'development'
+    example: 'development',
   })
   @IsOptional()
   @IsString()

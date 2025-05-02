@@ -9,7 +9,10 @@ export class CreatePaymentTeacherDto {
   })
   type: PaymentEnum;
 
-  @ApiProperty({ example: 1500000, description: 'Amount of the payment in UZS' })
+  @ApiProperty({
+    example: 1500000,
+    description: 'Amount of the payment in UZS',
+  })
   @IsNumber({}, { message: 'sum must be a number' })
   sum: number;
 

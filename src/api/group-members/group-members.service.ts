@@ -18,11 +18,11 @@ export class GroupMembersService {
 
   async create(createGroupMemberDto: CreateGroupMemberDto) {
     console.log(createGroupMemberDto);
-    
+
     const user = await this.prisma.user.findUnique({
       where: { user_id: createGroupMemberDto.userId },
     });
-    
+
     if (!user) {
       throw new NotFoundException('User not found!');
     }
@@ -30,7 +30,7 @@ export class GroupMembersService {
     const group = await this.prisma.groups.findUnique({
       where: { group_id: createGroupMemberDto.groupId },
     });
-    
+
     if (!group) {
       throw new NotFoundException('Group not found!');
     }
@@ -69,14 +69,14 @@ export class GroupMembersService {
   async findAll(page: number, limit: number) {
     const redisKey = `groupMembers:page:${page}:limit:${limit}`;
     const cachedGroupMembers = await this.redis.get(redisKey);
-  
+
     // 🧊 Redis cache bor bo‘lsa — shu yerda tugaydi
     if (cachedGroupMembers) {
       return JSON.parse(cachedGroupMembers);
     }
-  
+
     const skip = (page - 1) * limit;
-  
+
     // 📦 Bazadan ma'lumotlarni olish va umumiy sonini hisoblash
     const [groupMembers, total] = await Promise.all([
       this.prisma.groupMembers.findMany({
@@ -93,25 +93,25 @@ export class GroupMembersService {
       }),
       this.prisma.groupMembers.count(),
     ]);
-  
+
     // 📤 Javobni tayyorlash
     const response = {
       status: HttpStatus.OK,
       message: 'Group members retrieved successfully',
       data: groupMembers,
       meta: {
-        total,     // ➕ Jami group memberlar soni
-        page,      // 🔢 Qaysi sahifa
-        limit,     // 📏 Har sahifada nechta
+        total, // ➕ Jami group memberlar soni
+        page, // 🔢 Qaysi sahifa
+        limit, // 📏 Har sahifada nechta
       },
     };
-  
+
     // 🔁 Redisga saqlash
     await this.redis.set(redisKey, JSON.stringify(response), 'EX', 300);
-  
+
     return response;
   }
-  
+
   async findOne(id: string) {
     const groupMember = await this.prisma.groupMembers.findFirst({
       where: { group_members_id: id },

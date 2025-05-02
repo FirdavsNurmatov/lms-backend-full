@@ -58,7 +58,6 @@ export class RegisterDto {
   @IsPhoneNumber()
   phone_number: string;
 
-  
   @ApiProperty({
     type: String,
     description: 'Address of user',
@@ -74,7 +73,7 @@ export class RegisterDto {
     example: '2005-05-15',
   })
   @IsDateString()
-  data_of_birth: string| Date;
+  data_of_birth: string | Date;
   @ApiProperty({
     description: 'Foydalanuvchi roli',
     enum: UserRole,

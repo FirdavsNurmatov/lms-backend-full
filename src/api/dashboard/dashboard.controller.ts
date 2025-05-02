@@ -4,8 +4,13 @@ import { JwtAuthGuard } from '../../infrastructure/guards/jwt-auth.guard';
 import { RolesGuard } from '../../infrastructure/guards/roles.guard';
 import { Roles } from '../../infrastructure/decorators/roles.decorator';
 import { UserRole } from '@prisma/client';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
-import { DashboardStats, GroupStats, TeacherStats} from './dashboard.service';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { DashboardStats, GroupStats, TeacherStats } from './dashboard.service';
 
 @ApiTags('Dashboard')
 @ApiBearerAuth()
@@ -13,13 +18,14 @@ import { DashboardStats, GroupStats, TeacherStats} from './dashboard.service';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRole.ADMIN, UserRole.MANAGER)
 export class DashboardController {
-  constructor(private readonly dashboardService: DashboardService) { }
+  constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('stats')
   @ApiOperation({ summary: 'Get general statistics' })
   @ApiResponse({
     status: 200,
-    description: 'Returns general statistics including total students, teachers, groups, and courses.'
+    description:
+      'Returns general statistics including total students, teachers, groups, and courses.',
   })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   async getGeneralStats(): Promise<DashboardStats> {
@@ -42,10 +48,14 @@ export class DashboardController {
   @ApiOperation({ summary: 'Get groups statistics' })
   @ApiResponse({
     status: 200,
-    description: 'Returns groups statistics including total groups, active groups, and students per group.'
+    description:
+      'Returns groups statistics including total groups, active groups, and students per group.',
   })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
-  @ApiResponse({ status: 403, description: 'Forbidden. Admin/Manager access required.' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden. Admin/Manager access required.',
+  })
   async getGroupsStats(): Promise<GroupStats> {
     return await this.dashboardService.getGroupsStats();
   }
@@ -54,10 +64,14 @@ export class DashboardController {
   @ApiOperation({ summary: 'Get teachers statistics' })
   @ApiResponse({
     status: 200,
-    description: 'Returns teachers statistics including groups per teacher and their students.'
+    description:
+      'Returns teachers statistics including groups per teacher and their students.',
   })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
-  @ApiResponse({ status: 403, description: 'Forbidden. Admin/Manager access required.' })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden. Admin/Manager access required.',
+  })
   async getTeachersStats(): Promise<TeacherStats> {
     return await this.dashboardService.getTeachersStats();
   }

@@ -7,7 +7,7 @@ import { PaymentStudentService } from '../payment-for-student/payment-student.se
 import { FileModule } from 'src/infrastructure/lib';
 
 @Module({
-  imports: [ FileModule],
+  imports: [FileModule],
   controllers: [StudentController],
   providers: [
     StudentService,
