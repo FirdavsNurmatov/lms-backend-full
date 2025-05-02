@@ -21,7 +21,7 @@ RUN pnpm build
 
 EXPOSE 4000
 
-ENV DATABASE_URL="postgresql://postgres:3636@postgres:5432/lms_db"
+ENV DATABASE_URL="postgresql://postgres:postgres@postgres:5432/crm"
 ENV NODE_ENV="production"
 
 CMD ["node", "dist/src/main"]
